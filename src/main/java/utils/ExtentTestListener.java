@@ -61,7 +61,7 @@ public class ExtentTestListener implements ITestListener {
     }
 
     /**
-     * Método mantenido por si necesitas usarlo en el futuro
+     * Metodo mantenido por si necesitas usarlo en el futuro
      * Actualmente comentado para evitar screenshots duplicados
      */
     private void captureScreenshot(ITestResult result, String status, String styleName) {

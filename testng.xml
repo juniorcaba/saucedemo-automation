@@ -8,10 +8,11 @@
 
     <test name="Example Tests">
         <parameter name="browser" value="chrome"/>
-        <parameter name="baseUrl" value="https://www.youtube.com/"/>
+<!--        <parameter name="baseUrl" value="https://www.saucedemo.com/v1/"/>-->
 
         <classes>
-            <class name="tests.ExampleTest"/>
+<!--            <class name="tests.ExampleTest"/>-->
+            <class name="tests.LoginPageTest"/>
         </classes>
     </test>
 
