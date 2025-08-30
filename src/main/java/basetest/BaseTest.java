@@ -14,24 +14,47 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase base para todos los tests de automatización con sistema avanzado de reportes.
+ * Proporciona gestión de WebDriver thread-safe y un sistema de buffering para steps.
+ *
+ * @author HECTOR CABA
+ * @version 2.0
+ */
 @Listeners(utils.ExtentTestListener.class)
 public class BaseTest {
     private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<List<PendingStep>> pendingStepsThreadLocal = new ThreadLocal<>();
 
+    /**
+     * Define cómo se procesan los steps en el sistema de reportes.
+     */
     public enum StepMode {
-        BUFFER,     // Agrega al buffer
-        IMMEDIATE,  // Escribe inmediatamente
-        STATIC      // Alias para BUFFER
+        /** Agrupa steps en buffer para procesamiento posterior */
+        BUFFER,
+        /** Procesa y escribe el step inmediatamente */
+        IMMEDIATE,
+        /** Comportamiento idéntico a BUFFER */
+        STATIC
     }
 
+    /**
+     * Acciones disponibles para procesar el buffer de steps.
+     */
     public enum BufferAction {
-        COMMIT_SUCCESS,           // Todos los pasos como exitosos
-        COMMIT_WITH_FAILURE,      // Pasos exitosos + nuevo fallo
-        COMMIT_MERGED_FAILURE,    // Último paso combinado con mensaje de fallo
-        DISCARD_AND_FAIL         // Descartar buffer y solo escribir fallo
+        /** Confirma todos los steps del buffer como exitosos */
+        COMMIT_SUCCESS,
+        /** Confirma steps del buffer + agrega un step de fallo */
+        COMMIT_WITH_FAILURE,
+        /** Combina el último step del buffer con mensaje de fallo */
+        COMMIT_MERGED_FAILURE,
+        /** Descarta buffer y solo reporta el fallo */
+        DISCARD_AND_FAIL
     }
 
+    /**
+     * Representa un step pendiente en el buffer con su screenshot asociado.
+     */
     public static class PendingStep {
         private String description;
         private boolean isPassed;
@@ -57,7 +80,6 @@ public class BaseTest {
             }
         }
 
-        // Getters esenciales únicamente
         public String getDescription() { return description; }
         public boolean isPassed() { return isPassed; }
         public boolean shouldTakeScreenshot() { return takeScreenshot; }
@@ -73,6 +95,10 @@ public class BaseTest {
         }
     }
 
+    /**
+     * Configura un nuevo WebDriver para cada test method.
+     * Inicializa ChromeDriver con configuración estándar.
+     */
     @BeforeMethod
     public void setUp() {
         WebDriverManager.chromedriver().setup();
@@ -82,6 +108,10 @@ public class BaseTest {
         pendingStepsThreadLocal.set(new ArrayList<>());
     }
 
+    /**
+     * Limpia recursos después de cada test method.
+     * Cierra el WebDriver y limpia ThreadLocal variables.
+     */
     @AfterMethod
     public void tearDown() {
         WebDriver driver = driverThreadLocal.get();
@@ -107,6 +137,12 @@ public class BaseTest {
         }
     }
 
+    /**
+     * Obtiene la instancia de WebDriver del hilo actual.
+     *
+     * @return WebDriver instance para el test actual
+     * @throws RuntimeException si WebDriver no ha sido inicializado
+     */
     public static WebDriver getDriver() {
         WebDriver driver = driverThreadLocal.get();
         if (driver == null) {
@@ -125,11 +161,13 @@ public class BaseTest {
     }
 
     /**
-     * Método principal y único para crear steps
-     * @param description Descripción del step
-     * @param isPassed Si el step fue exitoso o no
-     * @param takeScreenshot Si debe tomar screenshot
-     * @param mode Modo de procesamiento (BUFFER, IMMEDIATE, STATIC)
+     * Crea un step de test con diferentes modos de procesamiento.
+     * Permite agrupar steps relacionados usando el buffer o procesarlos inmediatamente.
+     *
+     * @param description descripción detallada del step ejecutado
+     * @param isPassed true si el step fue exitoso, false si falló
+     * @param takeScreenshot true para capturar screenshot del estado actual
+     * @param mode modo de procesamiento (BUFFER, IMMEDIATE, STATIC)
      */
     public static void createStep(String description, boolean isPassed, boolean takeScreenshot, StepMode mode) {
         switch (mode) {
@@ -146,10 +184,12 @@ public class BaseTest {
     }
 
     /**
-     * Método principal y único para manejar el buffer
-     * @param action Acción a realizar con el buffer
-     * @param failureDescription Descripción del fallo (si aplica)
-     * @param takeScreenshot Si debe tomar screenshot del fallo (si aplica)
+     * Procesa todos los steps almacenados en el buffer según la acción especificada.
+     * Permite diferentes estrategias para manejar éxitos y fallos agrupados.
+     *
+     * @param action tipo de procesamiento a aplicar al buffer
+     * @param failureDescription mensaje de error (requerido para acciones de fallo)
+     * @param takeScreenshot true para capturar screenshot en fallos
      */
     public static void processBuffer(BufferAction action, String failureDescription, boolean takeScreenshot) {
         List<PendingStep> steps = getPendingSteps();

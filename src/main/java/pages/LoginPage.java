@@ -137,9 +137,12 @@ public class LoginPage extends BasePage {
     }
 
     /**
-     * Método auxiliar necesario para isLoginSuccessful()
-     * @return URL actual del navegador
+     * Obtiene la URL actual del navegador para validar el estado de navegación.
+     * Este metodo es utilizado por isLoginSuccessful() para verificar si el login redirige correctamente.
+     *
+     * @return Cadena con la URL actual del navegador
      */
+
     private String getCurrentUrl() {
         return driver.getCurrentUrl();
     }

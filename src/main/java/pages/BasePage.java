@@ -12,16 +12,31 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
+/**
+ * Clase base para implementar el patrón Page Object con sistema integrado de reportes.
+ * Las páginas heredadas deben definir pageUrl, validationLocator y pageName.
+ *
+ * @author HECTOR CABA
+ * @version 2.0
+ */
 public abstract class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
     private static final Logger logger = LoggerFactory.getLogger(BasePage.class);
 
-    // Variables que cada página debe definir
+    /** URL de la página - debe ser definida por cada página hija */
     protected String pageUrl;
+    /** Localizador para validar que la página cargó correctamente */
     protected By validationLocator;
+    /** Nombre descriptivo de la página para reportes */
     protected String pageName;
 
+    /**
+     * Inicializa la página base con WebDriver y configura WebDriverWait.
+     *
+     * @param driver instancia de WebDriver activa
+     * @throws IllegalArgumentException si driver es null
+     */
     public BasePage(WebDriver driver){
         if (driver == null){
             throw new IllegalArgumentException("webdriver no puede ser null. ");
@@ -40,6 +55,12 @@ public abstract class BasePage {
         }
     }
 
+    /**
+     * Pausa la ejecución por el tiempo especificado.
+     * Maneja InterruptedException adecuadamente.
+     *
+     * @param seconds tiempo de pausa en segundos
+     */
     public static void pause(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
@@ -49,8 +70,11 @@ public abstract class BasePage {
     }
 
     /**
-     * Método goTo que usa las variables definidas por cada página
-     * Cada página solo necesita definir: pageUrl, validationLocator, y pageName
+     * Navega a la página usando las propiedades definidas por la página hija.
+     * Valida que la página cargó correctamente mediante validationLocator.
+     *
+     * @throws InterruptedException si el hilo es interrumpido durante la pausa
+     * @throws RuntimeException si no se definieron las propiedades requeridas
      */
     public void goTo() throws InterruptedException {
         try {
@@ -74,10 +98,12 @@ public abstract class BasePage {
     }
 
     /**
-     * Método para hacer click con reporte usando el sistema unificado
-     * @param locator Localizador del elemento
-     * @param description Descripción para el reporte
-     * @param mode Modo de procesamiento del step
+     * Ejecuta click en elemento con reporte automático de resultado.
+     * Espera que el elemento sea clickeable antes de interactuar.
+     *
+     * @param locator selector del elemento objetivo
+     * @param description descripción de la acción para el reporte
+     * @param mode modo de procesamiento del step (BUFFER, IMMEDIATE, STATIC)
      */
     public void clickWithReport(By locator, String description, StepMode mode) {
         try {
@@ -91,11 +117,13 @@ public abstract class BasePage {
     }
 
     /**
-     * Método para escribir texto con reporte usando el sistema unificado
-     * @param locator Localizador del elemento
-     * @param text Texto a escribir
-     * @param description Descripción para el reporte
-     * @param mode Modo de procesamiento del step
+     * Ingresa texto en campo con limpieza previa y reporte automático.
+     * Espera que el elemento sea visible antes de escribir.
+     *
+     * @param locator selector del campo de texto
+     * @param text contenido a ingresar
+     * @param description descripción de la acción para el reporte
+     * @param mode modo de procesamiento del step
      */
     public void sendKeysWithReport(By locator, String text, String description, StepMode mode) {
         try {
@@ -110,12 +138,14 @@ public abstract class BasePage {
     }
 
     /**
-     * Método para validaciones con reporte usando el sistema unificado
-     * @param condition Condición a validar
-     * @param successMessage Mensaje si la validación es exitosa
-     * @param failureMessage Mensaje si la validación falla
-     * @param mode Modo de procesamiento del step
-     * @throws AssertionError Si la validación falla
+     * Ejecuta validación con reporte automático del resultado.
+     * Lanza AssertionError si la condición falla.
+     *
+     * @param condition expresión booleana a evaluar
+     * @param successMessage mensaje para mostrar si la validación pasa
+     * @param failureMessage mensaje para mostrar si la validación falla
+     * @param mode modo de procesamiento del step
+     * @throws AssertionError cuando la condición es false
      */
     public void validateWithReport(boolean condition, String successMessage, String failureMessage, StepMode mode) {
         if (condition) {
@@ -126,4 +156,3 @@ public abstract class BasePage {
         }
     }
 }
-
