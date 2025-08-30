@@ -19,8 +19,6 @@ public class BaseTest {
     private static ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
     private static ThreadLocal<List<PendingStep>> pendingStepsThreadLocal = new ThreadLocal<>();
 
-    // ============= ENUMERACIONES PARA CONTROL =============
-
     public enum StepMode {
         BUFFER,     // Agrega al buffer
         IMMEDIATE,  // Escribe inmediatamente
@@ -33,8 +31,6 @@ public class BaseTest {
         COMMIT_MERGED_FAILURE,    // Último paso combinado con mensaje de fallo
         DISCARD_AND_FAIL         // Descartar buffer y solo escribir fallo
     }
-
-    // ============= CLASE PendingStep SIMPLIFICADA =============
 
     public static class PendingStep {
         private String description;
@@ -67,8 +63,6 @@ public class BaseTest {
         public boolean shouldTakeScreenshot() { return takeScreenshot; }
         public String getScreenshotBase64() { return screenshotBase64; }
     }
-
-    // ============= MÉTODOS DE CONFIGURACIÓN =============
 
     @BeforeSuite
     public void setUpSuite() {
@@ -130,8 +124,6 @@ public class BaseTest {
         return steps;
     }
 
-    // ============= API PRINCIPAL PARA CREAR STEPS - MÉTODO ÚNICO =============
-
     /**
      * Método principal y único para crear steps
      * @param description Descripción del step
@@ -152,8 +144,6 @@ public class BaseTest {
                 break;
         }
     }
-
-    // ============= API PRINCIPAL PARA MANEJO DEL BUFFER - MÉTODO ÚNICO =============
 
     /**
      * Método principal y único para manejar el buffer
@@ -210,8 +200,6 @@ public class BaseTest {
 
         steps.clear();
     }
-
-    // ============= MÉTODOS INTERNOS =============
 
     private static void writeStepDirectlyWithStoredScreenshot(PendingStep step) {
         if (ExtentManager.getTest() == null) {

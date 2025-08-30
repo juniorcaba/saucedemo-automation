@@ -30,8 +30,6 @@ public abstract class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    // ============= MÉTODOS BÁSICOS ESENCIALES =============
-
     public void click(By locator) {
         try {
             WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
@@ -49,8 +47,6 @@ public abstract class BasePage {
             Thread.currentThread().interrupt();
         }
     }
-
-    // ============= MÉTODO goTo ÚNICO Y SIMPLIFICADO =============
 
     /**
      * Método goTo que usa las variables definidas por cada página
@@ -76,8 +72,6 @@ public abstract class BasePage {
             throw e;
         }
     }
-
-    // ============= MÉTODOS CON REPORTE - VERSIONES PRINCIPALES ÚNICAMENTE =============
 
     /**
      * Método para hacer click con reporte usando el sistema unificado
