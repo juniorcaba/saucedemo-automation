@@ -98,10 +98,16 @@
             <!-- Maven Resources Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <systemPropertyVariables>
+                        <webdriver.chrome.args>--disable-save-password-bubble,--disable-password-manager-reauthentication,--disable-notifications,--disable-infobars</webdriver.chrome.args>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
