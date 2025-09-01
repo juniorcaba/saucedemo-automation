@@ -31,13 +31,7 @@ public class LoginPage extends BasePage {
         this.validationLocator = usernameField;
         this.pageName = "Sauce";
     }
-
-    // ============= MÉTODO goTo SIMPLIFICADO =============
-    // ¡Ya no necesitas implementar nada más!
-    // El método goTo() se hereda de BasePage y usa automáticamente:
-    // - this.pageUrl
-    // - this.validationLocator
-    // - this.pageName
+    
 
     public void enterUsername(String username) throws InterruptedException {
         try {

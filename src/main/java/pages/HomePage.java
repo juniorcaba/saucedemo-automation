@@ -13,11 +13,6 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Página de inicio/inventario de SauceDemo con login automático integrado.
- * Esta página se carga automáticamente después de realizar el login.
- * EJEMPLO DE USO:
- * HomePage homePage = new HomePage(driver);
- * homePage.goTo(); // ¡Automáticamente hace login y va al inventario!
  *
  * @author HECTOR CABA
  * @version 1.0

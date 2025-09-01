@@ -28,12 +28,6 @@ public abstract class BaseAuthenticatedPage extends BasePage {
      * Navega a la página realizando login automático si es necesario.
      * Sobrescribe el metodo goTo() de BasePage para incluir autenticación.
      *
-     * Proceso:
-     * 1. Verifica si el usuario ya está logueado
-     * 2. Si no está logueado, ejecuta login automático
-     * 3. Navega a la página específica
-     * 4. Valida que la página cargó correctamente
-     *
      * @throws InterruptedException si el hilo es interrumpido durante la navegación
      * @throws RuntimeException si no se definieron las propiedades requeridas o si falla el login
      */
