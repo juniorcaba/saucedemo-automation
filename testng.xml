@@ -12,7 +12,7 @@
 
         <classes>
 <!--            <class name="tests.ExampleTest"/>-->
-            <class name="tests.LoginPageTest"/>
+            <class name="tests.HomePageTest"/>
         </classes>
     </test>
 

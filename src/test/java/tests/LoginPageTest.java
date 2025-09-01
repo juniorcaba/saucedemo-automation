@@ -22,7 +22,7 @@ public class LoginPageTest extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
 
         loginPage.goTo();
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.completeLogin("standard_user", "secret_sauce");
         String currentUrl = getDriver().getCurrentUrl();
         Assert.assertTrue(currentUrl.contains("inventory.html"), "No se redirigió a la página de inventario");
 
@@ -33,7 +33,7 @@ public class LoginPageTest extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
 
         loginPage.goTo();
-        loginPage.login("user", "password");
+        loginPage.completeLogin("user", "password");
 
 
         String currentUrl = getDriver().getCurrentUrl();

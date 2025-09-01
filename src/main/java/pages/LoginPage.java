@@ -115,7 +115,7 @@ public class LoginPage extends BasePage {
         }
     }
 
-    public void login(String username, String password) throws InterruptedException {
+    public void completeLogin(String username, String password) throws InterruptedException {
         enterUsername(username);
         enterPassword(password);
         clickLoginButton();
@@ -147,4 +147,6 @@ public class LoginPage extends BasePage {
         return driver.getCurrentUrl();
     }
 }
+
+
 
