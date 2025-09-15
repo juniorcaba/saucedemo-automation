@@ -49,7 +49,7 @@ public class LoginHelper {
 
             // Validar que el login fue exitoso
             if (loginPage.isLoginSuccessful()) {
-                BaseTest.createStep("Login completado exitosamente", true, true, StepMode.IMMEDIATE);
+                //BaseTest.createStep("Login completado exitosamente", true, true, StepMode.IMMEDIATE);
             } else {
                 BaseTest.createStep("Login falló - No se pudo autenticar al usuario", false, true, StepMode.IMMEDIATE);
                 throw new RuntimeException("Login automático falló");

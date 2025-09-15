@@ -1,26 +1,21 @@
 package pages;
 
+import basetest.BaseTest;
+import basetest.BaseTest.BufferAction;
+import basetest.BaseTest.StepMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import basetest.BaseTest;
-import basetest.BaseTest.StepMode;
-import basetest.BaseTest.BufferAction;
 
 import java.time.Duration;
 import java.util.List;
 
 /**
- * Página de inicio/inventario de SauceDemo con login automático integrado.
- * Esta página se carga automáticamente después de realizar el login.
- * EJEMPLO DE USO:
- * HomePage homePage = new HomePage(driver);
- * homePage.goTo(); // ¡Automáticamente hace login y va al inventario!
  *
  * @author HECTOR CABA
- * @version 1.0
+ * @version 1.2
  */
 public class HomePage extends BaseAuthenticatedPage {
 
@@ -29,11 +24,10 @@ public class HomePage extends BaseAuthenticatedPage {
     private final By productsContainer = By.className("inventory_list");
     private final By productItems = By.className("inventory_item");
     private final By shoppingCartIcon = By.className("shopping_cart_link");
-    private final By menuButton = By.id("react-burger-menu-btn");
-    private final By inventoryItemName = By.className("inventory_item_name");
-    private final By inventoryItemPrice = By.className("inventory_item_price");
-    private final By addToCartButtons = By.xpath("//button[contains(text(),'ADD TO CART')]");
-    private final By sortDropdown = By.className("product_sort_container");
+    private final By burgerMenuButton = By.className("bm-burger-button");
+    private final By sidebarMenu = By.className("bm-menu");
+    private final By logoutButton = By.id("logout_sidebar_link");
+    private final By checkoutButton = By.className("checkout_button");
 
     /**
      * Constructor de HomePage.
@@ -84,7 +78,7 @@ public class HomePage extends BaseAuthenticatedPage {
             WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(specificProductButton));
             addButton.click();
 
-            BaseTest.createStep("Producto agregado al carrito: " + productName, true, true, StepMode.BUFFER);
+            BaseTest.createStep("Producto agregado al carrito: " + productName, true, true, StepMode.IMMEDIATE);
 
         } catch (Exception e) {
             BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
@@ -120,12 +114,15 @@ public class HomePage extends BaseAuthenticatedPage {
     /**
      * Navega al carrito de compras.
      */
-    public void goToCart() {
+    public void goToCart() throws InterruptedException {
         try {
             WebElement cartIcon = wait.until(ExpectedConditions.elementToBeClickable(shoppingCartIcon));
             cartIcon.click();
 
-            BaseTest.createStep("Navegación exitosa al carrito de compras", true, true, StepMode.BUFFER);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(checkoutButton));
+
+            BaseTest.createStep("Navegación exitosa al carrito de compras", true, true, StepMode.IMMEDIATE);
+            Thread.sleep(500);
 
         } catch (Exception e) {
             BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
@@ -142,18 +139,13 @@ public class HomePage extends BaseAuthenticatedPage {
     public int getCartItemCount() {
         try {
             By cartBadge = By.className("shopping_cart_badge");
-
-//            if (driver.findElements(cartBadge).size() > 0) {
-//                String badgeText = driver.findElement(cartBadge).getText();
-//                int count = Integer.parseInt(badgeText);
             List<WebElement> badges = driver.findElements(cartBadge);
 
-                if (!badges.isEmpty()) {
-                    String badgeText = badges.get(0).getText();
-                    int count = Integer.parseInt(badgeText);
+            if (!badges.isEmpty()) {
+                String badgeText = badges.get(0).getText();
+                int count = Integer.parseInt(badgeText);
 
-
-                    BaseTest.createStep("Items en carrito detectados: " + count, true, false, StepMode.BUFFER);
+                BaseTest.createStep("Items en carrito detectados: " + count, true, false, StepMode.IMMEDIATE);
                 return count;
             } else {
                 BaseTest.createStep("Carrito vacío - No hay items", true, false, StepMode.BUFFER);
@@ -167,15 +159,12 @@ public class HomePage extends BaseAuthenticatedPage {
         }
     }
 
-
     public void addMultipleProductsToCart(String... productNames) {
         try {
-
             for (String productName : productNames) {
-                addProductToCart(productName); // Cada producto se añade al buffer
+                addProductToCart(productName);
             }
 
-            // Procesar todos los steps del buffer como exitosos
             BaseTest.processBuffer(BufferAction.COMMIT_SUCCESS, null, false);
 
             int finalCount = getCartItemCount();
@@ -186,6 +175,81 @@ public class HomePage extends BaseAuthenticatedPage {
             BaseTest.processBuffer(BufferAction.COMMIT_WITH_FAILURE,
                     "Error en adición múltiple de productos: " + e.getMessage(), true);
             throw e;
+        }
+    }
+
+    /**
+     * Verifica si el menú hamburguesa está visible en la página.
+     */
+    public boolean isBurgerMenuVisible() {
+        try {
+            List<WebElement> menuElements = driver.findElements(burgerMenuButton);
+            return !menuElements.isEmpty() && menuElements.get(0).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Verifica si el menú lateral está abierto.
+     */
+    public boolean isSidebarMenuOpen() {
+        try {
+            List<WebElement> sidebarElements = driver.findElements(sidebarMenu);
+            return !sidebarElements.isEmpty() && sidebarElements.get(0).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+    /**
+     * Hace clic en el botón del menú hamburguesa y verifica que se despliegue completamente
+     */
+    public void openBurgerMenu() {
+        try {
+            // Hacer clic en el botón del menú
+            WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("bm-burger-button")));
+            menuButton.click();
+
+            // Esperar múltiples condiciones para asegurar que el menú esté completamente listo
+            wait.until(ExpectedConditions.and(
+                    ExpectedConditions.visibilityOfElementLocated(By.className("bm-menu")),
+                    ExpectedConditions.elementToBeClickable(By.id("logout_sidebar_link"))
+            ));
+
+            BaseTest.createStep("Menú hamburguesa abierto exitosamente",
+                    true, true, StepMode.IMMEDIATE);
+
+        } catch (Exception e) {
+            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+                    "Error al abrir el menú hamburguesa: " + e.getMessage(), true);
+            throw new RuntimeException("No se encontró el botón del menú hamburguesa", e);
+        }
+    }
+
+    /**
+     * Realiza logout usando variable de clase, desde el menu Burger
+     */
+    public void performLogout() {
+        try {
+            // 1. Abrir menú hamburguesa (incluye todas las esperas necesarias)
+            openBurgerMenu();
+
+            // 2. Hacer clic en logout usando la variable de clase
+            WebElement logoutBtn = wait.until(ExpectedConditions.elementToBeClickable(logoutButton));
+            logoutBtn.click();
+
+            // 3. Verificar redirección exitosa a página de login
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-button")));
+
+            BaseTest.createStep("Logout realizado exitosamente",
+                    true, true, StepMode.IMMEDIATE);
+
+        } catch (Exception e) {
+            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+                    "Error durante el proceso de logout: " + e.getMessage(), true);
+            throw new RuntimeException("Error en logout: " + e.getMessage(), e);
         }
     }
 }
