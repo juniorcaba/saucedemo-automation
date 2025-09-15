@@ -11,8 +11,8 @@
 <!--        <parameter name="baseUrl" value="https://www.saucedemo.com/v1/"/>-->
 
         <classes>
-<!--            <class name="tests.ExampleTest"/>-->
-            <class name="tests.HomePageTest"/>
+            <class name="tests.CartPageTest"/>
+<!--            <class name="tests.CheckoutStepOneTest"/>-->
         </classes>
     </test>
 

@@ -38,12 +38,7 @@ public abstract class BaseAuthenticatedPage extends BasePage {
             if (pageUrl == null || validationLocator == null || pageName == null) {
                 throw new RuntimeException("La página debe definir pageUrl, validationLocator y pageName");
             }
-
-            // ===== PASO 1: ASEGURAR AUTENTICACIÓN =====
             LoginHelper.ensureUserLoggedIn(driver);
-
-            // ===== PASO 2: NAVEGAR A LA PÁGINA ESPECÍFICA =====
-            // Llamar al método goTo() original de BasePage
             super.goTo();
 
         } catch (Exception e) {

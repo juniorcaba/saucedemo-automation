@@ -25,13 +25,11 @@ public class LoginPage extends BasePage {
         super(driver);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-        // ============= CONFIGURACIÓN SIMPLE =============
-        // Solo definir estas 3 variables y listo!
         this.pageUrl = "https://www.saucedemo.com/v1/";
         this.validationLocator = usernameField;
         this.pageName = "Sauce";
     }
-    
+
 
     public void enterUsername(String username) throws InterruptedException {
         try {

@@ -161,6 +161,7 @@ package pages;
 import basetest.BaseTest;
 import basetest.BaseTest.StepMode;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -229,7 +230,7 @@ public abstract class BasePage {
                 throw new RuntimeException("La página debe definir pageUrl, validationLocator y pageName");
             }
 
-            BaseTest.createStep("Navegando a " + pageName, true, false, StepMode.IMMEDIATE);
+            //BaseTest.createStep("Navegando a " + pageName, true, false, StepMode.IMMEDIATE);
 
             // Navegar a la página
             driver.get(pageUrl);
@@ -237,7 +238,7 @@ public abstract class BasePage {
             // Validar que la página cargó
             wait.until(ExpectedConditions.presenceOfElementLocated(validationLocator));
 
-            BaseTest.createStep("Página " + pageName + " cargada correctamente", true, true, StepMode.IMMEDIATE);
+            //BaseTest.createStep("Página " + pageName + " cargada correctamente", true, true, StepMode.IMMEDIATE);
 
         } catch (Exception e) {
             BaseTest.createStep("Error al navegar a " + pageName + ": " + e.getMessage(), false, true, StepMode.IMMEDIATE);
@@ -257,19 +258,19 @@ public abstract class BasePage {
         }
     }
 
-    /**
-     * Click con reporte detallado.
-     */
-    public void click(By locator, String description, StepMode mode) {
-        try {
-            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
-            element.click();
-            BaseTest.createStep(description, true, true, mode);
-        } catch (Exception e) {
-            BaseTest.createStep("Error: " + description + " - " + e.getMessage(), false, true, mode);
-            throw new RuntimeException("Click falló: " + e.getMessage(), e);
-        }
-    }
+//    /**
+//     * Click con reporte detallado.
+//     */
+//    public void click(By locator, String description, StepMode mode) {
+//        try {
+//            WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+//            element.click();
+//            BaseTest.createStep(description, true, true, mode);
+//        } catch (Exception e) {
+//            BaseTest.createStep("Error: " + description + " - " + e.getMessage(), false, true, mode);
+//            throw new RuntimeException("Click falló: " + e.getMessage(), e);
+//        }
+//    }
 
     /**
      * Envía texto a un campo con limpieza previa.
@@ -308,5 +309,25 @@ public abstract class BasePage {
             BaseTest.createStep("Error en " + actionDescription + ": " + e.getMessage(), false, true, StepMode.IMMEDIATE);
             throw e;
         }
+    }
+
+    public void waitVisibility(By elementLocator){
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(elementLocator));
+    }
+
+    public void clickElement(By elementLocator){
+        waitVisibility(elementLocator);
+        driver.findElement(elementLocator).click();
+    }
+
+    public void clickOn(By element){
+        try{
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            driver.findElement(element).click();
+        }catch (NoSuchElementException e){
+            logger.error("Error Class BasePage in method clickOn", e);
+        }
+
+
     }
 }
