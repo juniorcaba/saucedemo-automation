@@ -55,26 +55,26 @@ public abstract class BaseAuthenticatedPage extends BasePage {
      * @param password contraseña específica
      * @throws InterruptedException si el hilo es interrumpido durante la navegación
      */
-    public void goTo(String username, String password) throws InterruptedException {
-        try {
-            // Validar propiedades requeridas
-            if (pageUrl == null || validationLocator == null || pageName == null) {
-                throw new RuntimeException("La página debe definir pageUrl, validationLocator y pageName");
-            }
-
-            // Forzar login con credenciales específicas
-            BaseTest.createStep("Login con credenciales específicas para " + pageName, true, false, BaseTest.StepMode.IMMEDIATE);
-
-            LoginHelper.performLogin(driver, username, password);
-
-            // Navegar a la página específica
-            super.goTo();
-
-        } catch (Exception e) {
-            BaseTest.createStep("Error al cargar " + pageName + " con credenciales específicas: " + e.getMessage(), false, true, BaseTest.StepMode.IMMEDIATE);
-            throw e;
-        }
-    }
+//    public void goTo(String username, String password) throws InterruptedException {
+//        try {
+//            // Validar propiedades requeridas
+//            if (pageUrl == null || validationLocator == null || pageName == null) {
+//                throw new RuntimeException("La página debe definir pageUrl, validationLocator y pageName");
+//            }
+//
+//            // Forzar login con credenciales específicas
+//            BaseTest.createStep("Login con credenciales específicas para " + pageName, true, false, BaseTest.StepMode.IMMEDIATE);
+//
+//            LoginHelper.performLogin(driver, username, password);
+//
+//            // Navegar a la página específica
+//            super.goTo();
+//
+//        } catch (Exception e) {
+//            BaseTest.createStep("Error al cargar " + pageName + " con credenciales específicas: " + e.getMessage(), false, true, BaseTest.StepMode.IMMEDIATE);
+//            throw e;
+//        }
+//    }
 
     /**
      * Método de utilidad para verificar si el usuario sigue autenticado.

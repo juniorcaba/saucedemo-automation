@@ -29,12 +29,7 @@ public class CartPage extends BaseAuthenticatedPage{
      * @throws IllegalArgumentException si driver es null
      */
     public CartPage(WebDriver driver) {
-        super(driver); // Llama al constructor de BaseAuthenticatedPage
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-
-        this.pageUrl = "https://www.saucedemo.com/v1/cart.html";
-        this.validationLocator = shoppingCartIcon;
-        this.pageName = "Página de Inventario";
+        super(driver);
     }
 
 

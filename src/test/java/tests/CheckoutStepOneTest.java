@@ -22,4 +22,18 @@ public class CheckoutStepOneTest extends BaseTest {
         checkoutstepone.goToCheckoutOverview();
 
     }
+
+    @Test(description = "Validar funcionalidad boton Cancel")
+    public void testCancelButton() throws InterruptedException {
+        HomePage homePage = new HomePage(getDriver());
+        homePage.goTo();
+
+        homePage.addProductToCart("Sauce Labs Backpack");
+        homePage.goToCart();
+        CartPage cartpage = new CartPage(getDriver());
+        cartpage.goToCheckoutForm();
+
+        CheckoutStepOnePage checkoutstepone = new CheckoutStepOnePage(getDriver());
+        checkoutstepone.clickCancel();
+    }
 }
