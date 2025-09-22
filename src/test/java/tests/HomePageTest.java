@@ -15,7 +15,8 @@ public class HomePageTest extends BaseTest {
         homePage.goTo(); // ← ¡Login automático incluido!
 
         // Ya estás en la página de inventario, listo para hacer tus validaciones
-        assert homePage.isPageLoaded();
+        //assert homePage.isPageLoaded();
+        Assert.assertTrue(homePage.isPageLoaded(), "La página de inventario no cargó correctamente");
     }
 
     //@Test(description = "Agregar productos al carro de compras")
@@ -26,10 +27,9 @@ public class HomePageTest extends BaseTest {
         // Ahora puedes hacer cualquier acción en la página autenticada
         homePage.addMultipleProductsToCart("Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt");
 
+        // Validar cantidad en carrito
         int cartCount = homePage.getCartItemCount();
-
-        // Validación directa sin createStep
-        assert cartCount == 3 : "Se esperaban 3 productos en el carrito, pero se encontraron " + cartCount;
+        Assert.assertEquals(cartCount, 3, "Cantidad incorrecta de productos en el carrito");
     }
 
     //@Test(description = "Consultar carro de compras con productos agregados")
@@ -39,6 +39,8 @@ public class HomePageTest extends BaseTest {
 
         homePage.addProductToCart("Sauce Labs Backpack");
         homePage.goToCart();
+
+        //Assert.assertTrue(cartPage.isProductInCart("Sauce Labs Backpack"));
     }
 
     //@Test(description = "Abrir menú hamburguesa y validar visibilidad")
@@ -47,6 +49,8 @@ public class HomePageTest extends BaseTest {
         homePage.goTo();
 
         homePage.openBurgerMenu();
+
+        Assert.assertTrue(homePage.isSidebarMenuOpen(), "El menú hamburguesa no se abrió correctamente");
 
     }
 
@@ -57,14 +61,6 @@ public class HomePageTest extends BaseTest {
 
         homePage.performLogout();
     }
-
-
-
-
-
-
-
-
 
 }
 

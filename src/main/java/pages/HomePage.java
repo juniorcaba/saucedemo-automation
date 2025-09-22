@@ -9,6 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static basetest.BaseTest.StepMode.*;
+import static basetest.BaseTest.BufferAction.*;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -28,6 +31,9 @@ public class HomePage extends BaseAuthenticatedPage {
     private final By sidebarMenu = By.className("bm-menu");
     private final By logoutButton = By.id("logout_sidebar_link");
     private final By checkoutButton = By.className("checkout_button");
+    private final By productLabel = By.className("product_label");
+    private final By sideMenu = By.id("bm-menu");
+    private final By loginButton = By.id("login-button");
 
     /**
      * Constructor de HomePage.
@@ -53,12 +59,12 @@ public class HomePage extends BaseAuthenticatedPage {
             List<WebElement> products = driver.findElements(productItems);
 
             BaseTest.createStep("Productos encontrados: " + products.size() + " items disponibles",
-                    true, true, StepMode.BUFFER);
+                    true, true, BUFFER);
 
             return products;
         } catch (Exception e) {
             BaseTest.createStep("Error al obtener lista de productos: " + e.getMessage(),
-                    false, true, StepMode.BUFFER);
+                    false, true, BUFFER);
             throw e;
         }
     }
@@ -78,10 +84,10 @@ public class HomePage extends BaseAuthenticatedPage {
             WebElement addButton = wait.until(ExpectedConditions.elementToBeClickable(specificProductButton));
             addButton.click();
 
-            BaseTest.createStep("Producto agregado al carrito: " + productName, true, true, StepMode.IMMEDIATE);
+            BaseTest.createStep("Producto agregado al carrito: " + productName, true, true, IMMEDIATE);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al agregar producto '" + productName + "' al carrito: " + e.getMessage(), true);
             throw e;
         }
@@ -100,13 +106,13 @@ public class HomePage extends BaseAuthenticatedPage {
             boolean isLoaded = driver.findElements(productItems).size() > 0;
 
             BaseTest.createStep("Validación de carga de página: " + (isLoaded ? "EXITOSA" : "FALLIDA"),
-                    isLoaded, true, StepMode.BUFFER);
+                    isLoaded, true, BUFFER);
 
             return isLoaded;
 
         } catch (Exception e) {
             BaseTest.createStep("Error validando carga de página: " + e.getMessage(),
-                    false, true, StepMode.BUFFER);
+                    false, true, BUFFER);
             return false;
         }
     }
@@ -121,11 +127,11 @@ public class HomePage extends BaseAuthenticatedPage {
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(checkoutButton));
 
-            BaseTest.createStep("Navegación exitosa al carrito de compras", true, true, StepMode.IMMEDIATE);
+            BaseTest.createStep("Navegación exitosa al carrito de compras", true, true, IMMEDIATE);
             Thread.sleep(500);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al navegar al carrito: " + e.getMessage(), true);
             throw e;
         }
@@ -145,16 +151,16 @@ public class HomePage extends BaseAuthenticatedPage {
                 String badgeText = badges.get(0).getText();
                 int count = Integer.parseInt(badgeText);
 
-                BaseTest.createStep("Items en carrito detectados: " + count, true, false, StepMode.IMMEDIATE);
+                BaseTest.createStep("Items en carrito detectados: " + count, true, false, IMMEDIATE);
                 return count;
             } else {
-                BaseTest.createStep("Carrito vacío - No hay items", true, false, StepMode.BUFFER);
+                BaseTest.createStep("Carrito vacío - No hay items", true, false, BUFFER);
                 return 0;
             }
 
         } catch (Exception e) {
             BaseTest.createStep("Error al contar items del carrito: " + e.getMessage(),
-                    false, false, StepMode.BUFFER);
+                    false, false, BUFFER);
             return 0;
         }
     }
@@ -165,14 +171,14 @@ public class HomePage extends BaseAuthenticatedPage {
                 addProductToCart(productName);
             }
 
-            BaseTest.processBuffer(BufferAction.COMMIT_SUCCESS, null, false);
+            BaseTest.processBuffer(COMMIT_SUCCESS, null, false);
 
             int finalCount = getCartItemCount();
             BaseTest.createStep("Adición múltiple completada - Total en carrito: " + finalCount + " items",
-                    true, true, StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_WITH_FAILURE,
+            BaseTest.processBuffer(COMMIT_WITH_FAILURE,
                     "Error en adición múltiple de productos: " + e.getMessage(), true);
             throw e;
         }
@@ -209,20 +215,20 @@ public class HomePage extends BaseAuthenticatedPage {
     public void openBurgerMenu() {
         try {
             // Hacer clic en el botón del menú
-            WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("bm-burger-button")));
+            WebElement menuButton = wait.until(ExpectedConditions.elementToBeClickable(burgerMenuButton));
             menuButton.click();
 
             // Esperar múltiples condiciones para asegurar que el menú esté completamente listo
             wait.until(ExpectedConditions.and(
-                    ExpectedConditions.visibilityOfElementLocated(By.className("bm-menu")),
-                    ExpectedConditions.elementToBeClickable(By.id("logout_sidebar_link"))
+                    ExpectedConditions.visibilityOfElementLocated(sidebarMenu),
+                    ExpectedConditions.elementToBeClickable(logoutButton)
             ));
 
             BaseTest.createStep("Menú hamburguesa abierto exitosamente",
-                    true, true, StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al abrir el menú hamburguesa: " + e.getMessage(), true);
             throw new RuntimeException("No se encontró el botón del menú hamburguesa", e);
         }
@@ -241,13 +247,13 @@ public class HomePage extends BaseAuthenticatedPage {
             logoutBtn.click();
 
             // 3. Verificar redirección exitosa a página de login
-            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-button")));
+            wait.until(ExpectedConditions.presenceOfElementLocated(loginButton));
 
             BaseTest.createStep("Logout realizado exitosamente",
-                    true, true, StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error durante el proceso de logout: " + e.getMessage(), true);
             throw new RuntimeException("Error en logout: " + e.getMessage(), e);
         }
