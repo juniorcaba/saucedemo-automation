@@ -166,37 +166,6 @@ reports.path=target/extent-reports/
 screenshots.path=target/screenshots/
 ```
 
-### testng.xml
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<suite name="SauceDemo Automation Suite" parallel="methods" thread-count="3">
-    
-    <test name="Smoke Tests">
-        <groups>
-            <run>
-                <include name="smoke"/>
-            </run>
-        </groups>
-        <classes>
-            <class name="tests.LoginTests"/>
-            <class name="tests.InventoryTests"/>
-        </classes>
-    </test>
-    
-    <test name="Regression Tests">
-        <groups>
-            <run>
-                <include name="regression"/>
-            </run>
-        </groups>
-        <classes>
-            <class name="tests.CheckoutTests"/>
-        </classes>
-    </test>
-    
-</suite>
-```
 
 ## 🔍 Estructura de Clases Principales
 
@@ -258,86 +227,9 @@ public class DriverManager {
 
 ### GitHub Actions Workflow
 
-```yaml
-name: Selenium Tests
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-      - name: Run tests
-        run: mvn clean test
-      - name: Generate report
-        run: mvn allure:report
-```
-
-## 🐛 Troubleshooting
-
-### Problemas Comunes
-
-**Error: Driver no encontrado**
-```bash
-# Solución: WebDriverManager se encarga automáticamente
-# Verificar conexión a internet
-```
-
-**Error: Timeout en elementos**
-```bash
-# Solución: Ajustar timeouts en config.properties
-timeout.explicit=30
-```
-
-**Error: Tests flaky**
-```bash
-# Solución: Implementar waits más robustos
-# Revisar sincronización de elementos
-```
-
-## 🤝 Contribución
-
-### Cómo Contribuir
-
-1. Fork del repositorio
-2. Crear feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit de cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la branch (`git push origin feature/AmazingFeature`)
-5. Crear Pull Request
-
-### Estándares de Código
-
-- Seguir convenciones de Java
-- Incluir pruebas para nuevas funcionalidades
-- Documentar métodos públicos
-- Mantener cobertura de código > 80%
-
-## 📞 Contacto y Soporte
-
-- **Autor**: [Tu Nombre]
-- **Email**: [tu.email@ejemplo.com]
-- **LinkedIn**: [Tu perfil de LinkedIn]
-- **Issues**: [GitHub Issues](https://github.com/tuusuario/saucedemo-automation/issues)
-
 ## 📄 Licencia
 
 Este proyecto está bajo la licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para detalles.
 
----
 
-## 🏆 Achievements
 
-- ✅ Framework completamente funcional
-- ✅ Cobertura de pruebas > 85%
-- ✅ Integración CI/CD exitosa
-- ✅ Documentación completa
-- ✅ Reportes automatizados
-- ✅ Cross-browser testing
-
----
-
-*Desarrollado con ❤️ y mucho ☕ para automatizar SauceDemo*
