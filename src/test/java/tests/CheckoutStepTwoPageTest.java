@@ -27,7 +27,7 @@ public class CheckoutStepTwoPageTest extends BaseTest {
         checkoutStepTwoPage.clickBtnCancel();
     }
 
-    @Test(description = "Validar funcionalidad boton Cancel")
+    @Test(description = "Completar el proceso de checkout")
     public void testCompleteCheckoutOverviewProcess() throws InterruptedException {
         HomePage homePage = new HomePage(getDriver());
         homePage.goTo();

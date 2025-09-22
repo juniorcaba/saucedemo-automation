@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import basetest.BaseTest;
-import basetest.BaseTest.StepMode;
-import basetest.BaseTest.BufferAction;
+import static basetest.BaseTest.StepMode.*;
+import static basetest.BaseTest.BufferAction.*;
 
 import java.time.Duration;
 
@@ -39,9 +39,9 @@ public class LoginPage extends BasePage {
 
             Thread.sleep(300);
 
-            BaseTest.createStep("Usuario ingresado: " + username, true, true, StepMode.BUFFER);
+            BaseTest.createStep("Usuario ingresado: " + username, true, true, BUFFER);
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al ingresar usuario: " + e.getMessage(), true);
             throw e;
         }
@@ -55,9 +55,9 @@ public class LoginPage extends BasePage {
 
             Thread.sleep(300);
 
-            BaseTest.createStep("Contraseña ingresada", true, true, StepMode.BUFFER);
+            BaseTest.createStep("Contraseña ingresada", true, true, BUFFER);
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al ingresar contraseña: " + e.getMessage(), true);
             throw e;
         }
@@ -67,13 +67,13 @@ public class LoginPage extends BasePage {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(loginButton));
 
-            BaseTest.createStep("Click en botón de login", true, true, StepMode.BUFFER);
+            BaseTest.createStep("Click en botón de login", true, true, BUFFER);
 
             driver.findElement(loginButton).click();
             Thread.sleep(500);
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al hacer click en login: " + e.getMessage(), true);
             throw e;
         }
@@ -116,14 +116,14 @@ public class LoginPage extends BasePage {
 
         if (isErrorMessageDisplayed()) {
             String errorMsg = getErrorMessage();
-            BaseTest.processBuffer(BufferAction.COMMIT_WITH_FAILURE, "Login falló: " + errorMsg, true);
+            BaseTest.processBuffer(COMMIT_WITH_FAILURE, "Login falló: " + errorMsg, true);
         } else {
             if (isLoginSuccessful()) {
-                BaseTest.processBuffer(BufferAction.COMMIT_SUCCESS, null, false);
-                BaseTest.createStep("Login exitoso - Redirigido a inventario", true, true, StepMode.IMMEDIATE);
+                BaseTest.processBuffer(COMMIT_SUCCESS, null, false);
+                BaseTest.createStep("Login exitoso - Redirigido a inventario", true, true, IMMEDIATE);
             } else {
-                BaseTest.processBuffer(BufferAction.COMMIT_SUCCESS, null, false);
-                BaseTest.createStep("Login procesado - Verificando resultado...", true, true, StepMode.IMMEDIATE);
+                BaseTest.processBuffer(COMMIT_SUCCESS, null, false);
+                BaseTest.createStep("Login procesado - Verificando resultado...", true, true, IMMEDIATE);
             }
         }
     }

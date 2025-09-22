@@ -5,11 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import static basetest.BaseTest.StepMode.*;
+import static basetest.BaseTest.BufferAction.*;
 
-import java.time.Duration;
-
-public class CheckoutStepOnePage extends BaseAuthenticatedPage{
+public class CheckoutStepOnePage extends BasePage{
 
     private final By inputFirstName = By.xpath("//input[@id='first-name']");
     private final By inputLastName = By.xpath("//input[@id='last-name']");
@@ -40,19 +39,19 @@ public class CheckoutStepOnePage extends BaseAuthenticatedPage{
         WebElement firstNameElement = wait.until(ExpectedConditions.elementToBeClickable(inputFirstName));
         firstNameElement.clear();
         firstNameElement.sendKeys(firstName);
-        BaseTest.createStep("Completando el campo First Name", true, true, BaseTest.StepMode.IMMEDIATE);
+        BaseTest.createStep("Completando el campo First Name", true, true, IMMEDIATE);
 
         // Completar campo Last Name
         WebElement lastNameElement = wait.until(ExpectedConditions.elementToBeClickable(inputLastName));
         lastNameElement.clear();
         lastNameElement.sendKeys(lastName);
-        BaseTest.createStep("Completando el campo Last Name", true, true, BaseTest.StepMode.IMMEDIATE);
+        BaseTest.createStep("Completando el campo Last Name", true, true, IMMEDIATE);
 
         // Completar campo Postal Code
         WebElement postalCodeElement = wait.until(ExpectedConditions.elementToBeClickable(inputPortalCode));
         postalCodeElement.clear();
         postalCodeElement.sendKeys(postalCode);
-        BaseTest.createStep("Completando el campo Postal Code", true, true, BaseTest.StepMode.IMMEDIATE);
+        BaseTest.createStep("Completando el campo Postal Code", true, true, IMMEDIATE);
 
 
     }
@@ -64,9 +63,9 @@ public class CheckoutStepOnePage extends BaseAuthenticatedPage{
         try{
             WebElement buttonContinue = wait.until(ExpectedConditions.elementToBeClickable(continueButton));
             buttonContinue.click();
-            BaseTest.createStep("Navegando a la pagina de Checkout: Overview", true, true, BaseTest.StepMode.IMMEDIATE);
+            BaseTest.createStep("Navegando a la pagina de Checkout: Overview", true, true, IMMEDIATE);
         }catch (Exception e){
-            BaseTest.processBuffer(BaseTest.BufferAction.COMMIT_MERGED_FAILURE,"Error al ingresar a la sesion de Checkout: Overview" + e.getMessage(), true);
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,"Error al ingresar a la sesion de Checkout: Overview" + e.getMessage(), true);
         }
 
     }
@@ -82,12 +81,12 @@ public class CheckoutStepOnePage extends BaseAuthenticatedPage{
             wait.until(ExpectedConditions.urlContains("cart.html"));
 
             BaseTest.createStep("Botón Cancel clickeado - Regreso exitoso al carrito",
-                    true, true, BaseTest.StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
             Thread.sleep(500); // Pausa para estabilidad
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BaseTest.BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al hacer clic en el botón Cancel: " + e.getMessage(), true);
             throw new RuntimeException("No se pudo hacer clic en Cancel o redirigir al carrito", e);
         }

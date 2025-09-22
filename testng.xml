@@ -13,7 +13,9 @@
         <classes>
 <!--            <class name="tests.HomePageTest"/>-->
 <!--            <class name="tests.CartPageTest"/>-->
-            <class name="tests.CheckoutStepTwoPageTest"/>
+<!--            <class name="tests.CheckoutStepTwoPageTest"/>-->
+<!--            <class name="tests.CheckoutStepOneTest"/>-->
+            <class name="tests.CheckoutCompleteTest"/>
         </classes>
     </test>
 

@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static basetest.BaseTest.StepMode.*;
+import static basetest.BaseTest.BufferAction.*;
+
 import java.time.Duration;
 
 public class CheckoutStepTwoPage extends BasePage {
@@ -40,13 +43,13 @@ public class CheckoutStepTwoPage extends BasePage {
             wait.until(ExpectedConditions.urlContains("inventory.html"));
 
             BaseTest.createStep("Botón Cancel clickeado - Regreso exitoso al listado de productos",
-                    true, true, BaseTest.StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
             Thread.sleep(500); // Pausa para estabilidad
 
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BaseTest.BufferAction.COMMIT_MERGED_FAILURE,
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,
                     "Error al hacer clic en el botón Cancel: " + e.getMessage(), true);
             throw new RuntimeException("No se pudo hacer clic en Cancel", e);
         }
@@ -59,7 +62,7 @@ public class CheckoutStepTwoPage extends BasePage {
             finishBtn.click();
 
             BaseTest.createStep("Botón Finish clickeado exitosamente en Checkout Overview.",
-                    true, true, BaseTest.StepMode.IMMEDIATE);
+                    true, true, IMMEDIATE);
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(ponyExpressImg));
             wait.until(ExpectedConditions.visibilityOfElementLocated(titleFinish));
@@ -67,7 +70,7 @@ public class CheckoutStepTwoPage extends BasePage {
             Thread.sleep(500); // Pausa para estabilidad
 
         } catch (Exception e) {
-            BaseTest.processBuffer(BaseTest.BufferAction.COMMIT_MERGED_FAILURE, "Error al completar Checkout Overview: " + e.getMessage(), true);
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE, "Error al completar Checkout Overview: " + e.getMessage(), true);
             throw new RuntimeException("No se pudo hacer clic en Finish", e);
         }
     }

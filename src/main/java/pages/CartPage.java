@@ -5,7 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import static basetest.BaseTest.StepMode.*;
+import static basetest.BaseTest.BufferAction.*;
 
 import java.time.Duration;
 
@@ -42,13 +43,13 @@ public class CartPage extends BaseAuthenticatedPage{
         try {
             WebElement checkout = wait.until(ExpectedConditions.elementToBeClickable(checkoutButton));
             checkout.click();
-            BaseTest.createStep("Se muestra la página de información del proceso de Checkout", true, true, BaseTest.StepMode.IMMEDIATE);
+            BaseTest.createStep("Se muestra la página de información del proceso de Checkout", true, true, IMMEDIATE);
             wait.until(ExpectedConditions.visibilityOfElementLocated(cancelButton));
             wait.until(ExpectedConditions.urlContains("checkout-step-one"));
             Thread.sleep(500);
 
         }catch (Exception e){
-            BaseTest.processBuffer(BaseTest.BufferAction.COMMIT_MERGED_FAILURE,"Error en mostrar opcion de Checkout", true);
+            BaseTest.processBuffer(COMMIT_MERGED_FAILURE,"Error en mostrar opcion de Checkout", true);
             throw e;
 
         }
