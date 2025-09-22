@@ -27,37 +27,7 @@ Este proyecto implementa un framework de automatización de pruebas para la apli
 | **WebDriverManager** | 5.0+ | Gestión automática de drivers |
 | **ExtentReports** | 5.0+ | Generación de reportes HTML |
 
-## 🏗️ Arquitectura del Proyecto
 
-```
-src/
-├── main/java/
-│   ├── pages/
-│   │   ├── BasePage.java
-│   │   ├── LoginPage.java
-│   │   ├── InventoryPage.java
-│   │   └── CheckoutPage.java
-│   ├── utils/
-│   │   ├── DriverManager.java
-│   │   ├── ConfigReader.java
-│   │   └── TestDataProvider.java
-│   └── constants/
-│       └── Constants.java
-├── test/java/
-│   ├── tests/
-│   │   ├── BaseTest.java
-│   │   ├── LoginTests.java
-│   │   ├── InventoryTests.java
-│   │   └── CheckoutTests.java
-│   └── listeners/
-│       └── ExtentReportListener.java
-├── resources/
-│   ├── config.properties
-│   ├── testdata.xlsx
-│   └── testng.xml
-└── reports/
-    └── extent-reports/
-```
 
 ## ✨ Características Principales
 
@@ -77,26 +47,6 @@ src/
 - ✅ **Logging Detallado**: Sistema de logs para debugging y troubleshooting
 - ✅ **Data-Driven Testing**: Soporte para archivos Excel y JSON
 - ✅ **Parallel Execution**: Capacidad de ejecutar pruebas en paralelo
-
-## 🚦 Casos de Prueba Implementados
-
-### 🔐 Módulo de Login
-- Validación de login exitoso con credenciales válidas
-- Validación de mensajes de error con credenciales inválidas
-- Verificación de bloqueo de usuario
-- Validación de campos obligatorios
-
-### 🛒 Módulo de Inventario
-- Verificación de carga correcta de productos
-- Funcionalidad de filtrado y ordenamiento
-- Agregado y eliminación de productos del carrito
-- Validación de información de productos
-
-### 💳 Módulo de Checkout
-- Proceso completo de compra
-- Validación de información de checkout
-- Cálculo correcto de totales e impuestos
-- Confirmación de orden exitosa
 
 ## 🚀 Instalación y Configuración
 
